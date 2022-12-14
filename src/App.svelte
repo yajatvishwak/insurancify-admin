@@ -2,20 +2,21 @@
   import { onMount } from "svelte";
   import axios from "axios";
 
-  let isLoggedin = true;
+  let isLoggedin = false;
   let password = "123";
   let userPassword = "";
 
   onMount(async () => {
-    const { data } = await axios.get("http://localhost:5000/getvals");
+    const { data } = await axios.get("http://localhost:5001/getvals");
     if (data) {
       items = data;
+      console.log(data);
     }
   });
   let items = [
     {
       title: "This is and insurance",
-      desc: "           Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates, provident. Porro placeat similique, quae dolores tempore neque quibusdam vitae architecto. Quia fugiat assumenda soluta quasi accusamus maiores eaque dolores sed.",
+      desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates, provident. Porro placeat similique, quae dolores tempore neque quibusdam vitae architecto. Quia fugiat assumenda soluta quasi accusamus maiores eaque dolores sed.",
       name: "name",
       status: "pending",
     },
@@ -26,15 +27,15 @@
     alert("Wrong password");
   }
   async function accept(lid) {
-    await axios.post("http://localhost:5000/accept", { lid });
-    const { data } = await axios.get("http://localhost:5000/getvals");
+    await axios.post("http://192.46.208.181:5001/accept", { lid });
+    const { data } = await axios.get("http://localhost:5001/getvals");
     if (data) {
       items = data;
     }
   }
   async function reject(lid) {
-    await axios.post("http://localhost:5000/reject", { lid });
-    const { data } = await axios.get("http://localhost:5000/getvals");
+    await axios.post("http://localhost:5001/reject", { lid });
+    const { data } = await axios.get("http://localhost:5001/getvals");
     if (data) {
       items = data;
     }
@@ -64,6 +65,7 @@
         <div class="bg-white p-10 rounded-xl shadow-lg">
           <div class="text-3xl font-bold">{item.title}</div>
           <div>{item.desc}</div>
+          <div>by {item.name}</div>
           <div class="font-bold mt-2 opacity-50">{item.status}</div>
           <div class="flex gap-3 mt-5">
             <!-- svelte-ignore a11y-click-events-have-key-events -->
